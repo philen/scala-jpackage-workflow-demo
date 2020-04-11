@@ -8,6 +8,7 @@ Commits to any branch named `release/*` should result in triggering the workflow
 * build a fat jar using sbt-assembly
 * build an OS X dmg file
 * build a Windows msi file
+
 The built artifacts (jars, msis, dmgs) can be found under the repo's Action tab.
 
 The dmg should be installable on OS X, adding an app named `SwingTest`.
