@@ -55,7 +55,7 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: jars
-    - name: Package jar as dmg installer
+    - name: Package jar as msi
       run: jpackage --name SwingTest --type msi -i jars --main-class example.Main --main-jar swingtest-assembly-1.0.jar --win-dir-chooser
     - name: View artifacts
       run: dir
