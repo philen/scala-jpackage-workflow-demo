@@ -69,3 +69,24 @@ jobs:
       with:
         name: msis
         path: "${{ env.pkg-name }}-${{ env.pkg-version }}.msi"
+  linux:
+    needs: fat
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '14.0.0'
+        java-package: jdk
+        architecture: x64
+    - name: Download fat jar
+      uses: actions/download-artifact@v1
+      with:
+        name: jars
+    - name: Package jar as debian package
+      run: "jpackage --name ${{ env.pkg-name }} --type deb -i jars --main-class example.Main --main-jar ${{ env.pkg-assembly }}"
+    - name: Upload deb
+      uses: actions/upload-artifact@v1
+      with:
+          name : debs
+        path: "${{ env.pkg-name }}-${{ env.pkg-version }}.deb"
