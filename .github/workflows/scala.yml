@@ -88,5 +88,5 @@ jobs:
     - name: Upload deb
       uses: actions/upload-artifact@v1
       with:
-          name : debs
+          name: debs
         path: "${{ env.pkg-name }}-${{ env.pkg-version }}.deb"
