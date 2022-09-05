@@ -46,7 +46,7 @@ jobs:
       with:
         name: jars
     - name: Package jar as dmg installer
-      run: "jpackage --name ${{ env.pkg-name }} -i jars --main-class example.Main --main-jar ${{ env.pkg-assembly }}"
+      run: "jpackage --app-version ${{ env.pkg-version }} --name ${{ env.pkg-name }} -i jars --main-class example.Main --main-jar ${{ env.pkg-assembly }}"
     - name: Upload dmg
       uses: actions/upload-artifact@v1
       with:
@@ -67,7 +67,7 @@ jobs:
       with:
         name: jars
     - name: Package jar as msi
-      run: "jpackage --name ${{ env.pkg-name }} --type msi -i jars --main-class example.Main --main-jar ${{ env.pkg-assembly }} --win-dir-chooser"
+      run: "jpackage --app-version ${{ env.pkg-version }} --name ${{ env.pkg-name }} --type msi -i jars --main-class example.Main --main-jar ${{ env.pkg-assembly }} --win-dir-chooser"
     - name: View artifacts
       run: dir
     - name: Upload installer
@@ -90,7 +90,7 @@ jobs:
       with:
         name: jars
     - name: Package jar as debian package
-      run: "jpackage --name ${{ env.pkg-name }} --type deb -i jars --main-class example.Main --main-jar ${{ env.pkg-assembly }}"
+      run: "jpackage --app-version ${{ env.pkg-version }} --name ${{ env.pkg-name }} --type deb -i jars --main-class example.Main --main-jar ${{ env.pkg-assembly }}"
     - name: Upload deb
       uses: actions/upload-artifact@v1
       with:
