@@ -1,7 +1,7 @@
 name := "swingtest"
 organization := "example"
 version := "1.0"
-scalaVersion := "2.13.6"
+scalaVersion := "2.13.8"
 
 lazy val app = (project in file("."))
   .settings(
