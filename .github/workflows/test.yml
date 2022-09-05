@@ -49,7 +49,7 @@ jobs:
     - name: Package jar as dmg installer
       run: "jpackage --app-version ${{ env.pkg-version }} --name ${{ env.pkg-name }} -i jars --main-class example.Main --main-jar ${{ env.pkg-assembly }}"
     - name: View artifacts
-      run: dir
+      run: "ls -l"
     - name: Upload dmg
       uses: actions/upload-artifact@v1
       with:
