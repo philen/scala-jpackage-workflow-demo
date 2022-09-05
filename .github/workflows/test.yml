@@ -13,6 +13,7 @@ on:
 env:
   pkg-assembly: 'swingtest-assembly-1.1.jar'
   pkg-name: 'SwingTest'
+  pkg-name-debian: 'swingtest'
   pkg-version: '1.1'
 
 jobs:
@@ -99,4 +100,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: debs
-        path: "${{ env.pkg-name }}-${{ env.pkg-version }}.deb"
+        path: "${{ env.pkg-name-debian }}_${{ env.pkg-version }}-1_amd64.deb"
