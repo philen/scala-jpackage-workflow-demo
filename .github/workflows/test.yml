@@ -1,0 +1,98 @@
+name: Build master manually
+
+on: 
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Test master build'
+
+env:
+  pkg-assembly: 'swingtest-assembly-1.0.jar'
+  pkg-name: 'SwingTest'
+  pkg-version: '1.1'
+
+jobs:
+  fat:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Build fat jar
+      run: sbt assembly
+    - name: Upload fat jar
+      uses: actions/upload-artifact@v1
+      with:
+        name: jars
+        path: "target/scala-2.13/${{ env.pkg-assembly }}"
+  osx:
+    needs: fat
+    runs-on: [macos-latest]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '14.0.0'
+        java-package: jdk
+        architecture: x64
+    - name: Download fat jar
+      uses: actions/download-artifact@v1
+      with:
+        name: jars
+    - name: Package jar as dmg installer
+      run: "jpackage --name ${{ env.pkg-name }} -i jars --main-class example.Main --main-jar ${{ env.pkg-assembly }}"
+    - name: Upload dmg
+      uses: actions/upload-artifact@v1
+      with:
+        name: dmgs
+        path: "${{ env.pkg-name }}-${{ env.pkg-version }}.dmg"
+  windows:
+    needs: fat
+    runs-on: [windows-latest]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '14.0.0'
+        java-package: jdk
+        architecture: x64
+    - name: Download fat jar
+      uses: actions/download-artifact@v1
+      with:
+        name: jars
+    - name: Package jar as msi
+      run: "jpackage --name ${{ env.pkg-name }} --type msi -i jars --main-class example.Main --main-jar ${{ env.pkg-assembly }} --win-dir-chooser"
+    - name: View artifacts
+      run: dir
+    - name: Upload installer
+      uses: actions/upload-artifact@v1
+      with:
+        name: msis
+        path: "${{ env.pkg-name }}-${{ env.pkg-version }}.msi"
+  linux:
+    needs: fat
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '14.0.0'
+        java-package: jdk
+        architecture: x64
+    - name: Download fat jar
+      uses: actions/download-artifact@v1
+      with:
+        name: jars
+    - name: Package jar as debian package
+      run: "jpackage --name ${{ env.pkg-name }} --type deb -i jars --main-class example.Main --main-jar ${{ env.pkg-assembly }}"
+    - name: Upload deb
+      uses: actions/upload-artifact@v1
+      with:
+        name: debs
+        path: "${{ env.pkg-name }}-${{ env.pkg-version }}.deb"
