@@ -11,7 +11,7 @@ on:
         description: 'Test master build'
 
 env:
-  pkg-assembly: 'swingtest-assembly-1.0.jar'
+  pkg-assembly: 'swingtest-assembly-1.1.jar'
   pkg-name: 'SwingTest'
   pkg-version: '1.1'
 
